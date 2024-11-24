@@ -10,7 +10,14 @@ import savingRouter from "./routers/savings.js";
 import userRouter from "./routers/user.js";
 import goalRouter from "./routers/goals.js";
 import { verifyJWT } from "./utils/verifyJWT.js";
-import User from "./models/user.js";
+// import User from "./models/user.js";
+// import MongoClient from "mongodb";
+
+const url=process.env.DB_URL
+// const client=new MongoClient(url);
+// const dbName='pfpdb';
+// let db=undefined
+
 
 const app = express();
 const PORT = process.env.PORT;
@@ -34,8 +41,9 @@ app.use("/budgets", verifyJWT, budgetRouter);
 app.use("/savings", verifyJWT, savingRouter);
 app.use("/saving-goals", verifyJWT, goalRouter);
 
+
 mongoose
-  .connect(`${process.env.DB_PATH}/${process.env.DB_NAME}`)
+  .connect(`${process.env.DB_URL}/${process.env.DB_NAME}`)
   .then(() => {
     app.listen(PORT, () => {
       console.log("http://localhost:" + PORT);
