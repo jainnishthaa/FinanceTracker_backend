@@ -100,7 +100,7 @@ export const postLogin = responseHandler(async (req, res, next) => {
     // console.log(refreshToken);
     // console.log(accessToken);
     const options = {
-      httpOnly: true,
+      // httpOnly: true,
     };
 
     let user = await User.findOne({
