@@ -23,10 +23,7 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use(
-  cors({
-    origin: process.env.CORS_ORIGINS,
-    credentials: true,
-  })
+  cors()
 );
 app.use(bodyParser.json({ limit: "4kb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "4kb" }));
