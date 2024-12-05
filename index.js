@@ -22,9 +22,20 @@ const url=process.env.DB_URL
 const app = express();
 const PORT = process.env.PORT;
 
+const allowedOrigins = ['https://finance-tracker-frontend-nu.vercel.app'];
 app.use(
-  cors()
+  cors({
+    origin: function (origin, callback) {
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true, // Allow credentials
+  })
 );
+
 app.use(bodyParser.json({ limit: "4kb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "4kb" }));
 app.use(express.static("public")); // To store the information that front end might provide
