@@ -43,7 +43,7 @@ app.use("/saving-goals", verifyJWT, goalRouter);
 
 
 mongoose
-  .connect(`${process.env.DB_URL}/${process.env.DB_NAME}`)
+  .connect(`mongodb+srv://nishthaa2003:nishthaa2000@financetracker.oawop.mongodb.net/?retryWrites=true&w=majority&appName=FinanceTracker`)
   .then(() => {
     app.listen(PORT, () => {
       console.log("http://localhost:" + PORT);
