@@ -101,6 +101,7 @@ export const postLogin = responseHandler(async (req, res, next) => {
     const options={
       httpOnly: true,
       secure: true,
+      sameSite: "None",
     }
 
     let user = await User.findOne({
