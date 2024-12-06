@@ -94,26 +94,25 @@ export const postLogin = responseHandler(async (req, res, next) => {
     if (!isValidPassword) {
       throw new ErrorHandler(401, "Invalid password");
     }
-    const { accessToken, refreshToken } = await generateAccessTokenAndRefereshToken(
-      existingUser._id
-    );
+    const { accessToken, refreshToken } =
+      await generateAccessTokenAndRefereshToken(existingUser._id);
     // console.log(accessToken);
-    const options={
+    const options = {
       httpOnly: true,
       secure: true,
       sameSite: "None",
-    }
+    };
 
-    let user = await User.findOne({
-      _id: existingUser._id,
-    }).select("-refreshToken -password");
+    const user = { ...existingUser.toObject() };
+    delete user.password;
+    delete user.refreshToken;
 
     // console.log(user);
 
     return res
       .status(200)
-      .cookie("accessToken", accessToken)
-      .cookie("refreshToken", refreshToken)
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", refreshToken, options)
       .json({
         user,
         message: "logged in successfully",
