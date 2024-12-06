@@ -23,7 +23,7 @@ export const postAddExpense = responseHandler(async (req, res, next) => {
     if (budgetindex == -1) {
       throw new ErrorHandler(404, "Budget not found");
     }
-    console.log(budgetindex);
+    // console.log(budgetindex);
     let budget = user["budgets"][budgetindex];
     if (budget.totalAmount - budget.amountSpent < amount) {
       throw new ErrorHandler(400, "Insufficient Budget");
@@ -86,7 +86,7 @@ export const postUpdateExpense = responseHandler(async (req, res, next) => {
       if (budgetindex == -1) {
         throw new ErrorHandler(404, "Budget not found");
       }
-      console.log(budgetindex);
+      // console.log(budgetindex);
       user["budgets"][budgetindex].amountSpent-=(Number)(prevAmt);
       user["budgets"][budgetindex].amountSpent += (Number)(amount);
       user["expenses"][index].amount=amount;

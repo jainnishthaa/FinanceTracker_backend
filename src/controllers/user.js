@@ -72,7 +72,7 @@ export const getAllInfo = responseHandler(async (req, res, next) => {
       savingGoal: user.savingGoals[0],
       saving: user.savings[0],
     };
-    console.log(data);
+    // console.log(data);
     res.status(200).json({
       message: "Info fetched successfully",
       data: data,

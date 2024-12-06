@@ -22,17 +22,33 @@ const url=process.env.DB_URL
 const app = express();
 const PORT = process.env.PORT;
 
-const allowedOrigins = ['https://finance-tracker-frontend-nu.vercel.app'];
+// const allowedOrigins = ['https://finance-tracker-frontend-nu.vercel.app','http://127.0.0.1:3000/'];
+// const allowedOrigins = ['http://127.0.0.1:3000'];
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       if (allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error('Not allowed by CORS'));
+//       }
+//     },
+//     credentials: true, // Allow credentials
+//   })
+// );
+const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000','http://192.168.29.121:3000']; // Frontend origins
+
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (allowedOrigins.includes(origin)) {
+      // Allow requests from specific origins or requests without an origin (e.g., Postman)
+      if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
       }
     },
-    credentials: true, // Allow credentials
+    credentials: true, 
   })
 );
 

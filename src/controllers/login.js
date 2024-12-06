@@ -13,7 +13,7 @@ const generateAccessTokenAndRefereshToken = async (userId) => {
     // user.accessToken = accessToken;
 
     await user.save();
-
+    // console.log(accessToken, refreshToken)
     return { accessToken, refreshToken };
   } catch (err) {
     throw new ApiError(
@@ -78,61 +78,56 @@ export const postSignup = responseHandler(async (req, res, next) => {
 });
 
 export const postLogin = responseHandler(async (req, res, next) => {
-  const { username, password, email } = req.body;
+  const { username, email, password } = req.body;
   // console.log(username);
+  // console.log(email);
+  // console.log(password);
   try {
-    let existingUser = await User.findOne({
-      $or: [{ username }, { email }],
-    });
-
+    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
     if (!existingUser) {
-      throw new ErrorHandler(400, "Please provide correct username or email");
+      throw new ErrorHandler(401, "Invalid username or email");
     }
-
-    const isMatch = await bcrypt.compare(password, existingUser.password);
-
-    if (!isMatch) {
-      throw new ErrorHandler(400, "Incorrect password");
+    const isValidPassword = await bcrypt.compare(
+      password,
+      existingUser.password
+    );
+    if (!isValidPassword) {
+      throw new ErrorHandler(401, "Invalid password");
     }
-
-    const { accessToken, refreshToken } =
-      await generateAccessTokenAndRefereshToken(existingUser._id);
-    // console.log(refreshToken);
+    const { accessToken, refreshToken } = await generateAccessTokenAndRefereshToken(
+      existingUser._id
+    );
     // console.log(accessToken);
-    const options = {
-      // httpOnly: true,
-    };
 
     let user = await User.findOne({
       _id: existingUser._id,
     }).select("-refreshToken -password");
 
+    // console.log(user);
+
     return res
       .status(200)
-      .cookie("accessToken", accessToken, options)
-      .cookie("refreshToken", refreshToken, options)
+      .cookie("accessToken", accessToken)
+      .cookie("refreshToken", refreshToken)
       .json({
         user,
-        message: "Successfully Logged In",
+        message: "logged in successfully",
       });
   } catch (error) {
     console.log(error);
-    throw new ErrorHandler(
-      error.statusCode || 500,
-      error.message || "cannot log in user"
-    );
+    throw new ErrorHandler(500, "can't login right now");
   }
 });
 
 export const getLogout = responseHandler(async (req, res, next) => {
   try {
     const refreshToken = req.cookies.refreshToken;
-    if(!refreshToken){
+    if (!refreshToken) {
       throw new ErrorHandler(400, "You are not logged in");
     }
-    const user = await User.findOne({refreshToken});
+    const user = await User.findOne({ refreshToken });
     if (!user) {
-      throw new ErrorHandler(400,"User not found");
+      throw new ErrorHandler(400, "User not found");
     }
     const options = {
       httpOnly: true,

@@ -23,7 +23,7 @@ export const postAddSaving = responseHandler(async (req, res, next) => {
     if (goalindex == -1) {
       throw new ErrorHandler(404, "Saving Goal not found");
     }
-    console.log(goalindex);
+    // console.log(goalindex);
     let goal = user["savingGoals"][goalindex];
     if (goal.goalAmt - goal.amountSaved < amount) {
       throw new ErrorHandler(400, "Extra saving");
