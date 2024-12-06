@@ -98,6 +98,10 @@ export const postLogin = responseHandler(async (req, res, next) => {
       existingUser._id
     );
     // console.log(accessToken);
+    const options={
+      httpOnly: true,
+      secure: true,
+    }
 
     let user = await User.findOne({
       _id: existingUser._id,

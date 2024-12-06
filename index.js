@@ -36,7 +36,7 @@ const PORT = process.env.PORT;
 //     credentials: true, // Allow credentials
 //   })
 // );
-const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000','https://finance-tracker-frontend-nu.vercel.app/']; // Frontend origins
+const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000','https://finance-tracker-frontend-nu.vercel.app']; // Frontend origins
 
 app.use(
   cors({
